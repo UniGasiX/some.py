@@ -30,6 +30,9 @@ allowed = r"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ··,
 # 转义特殊字符
 nested_str = nested_str.replace("\\", "\\\\").replace(
     "\n", "\\n").replace("'", "\\'")
+# 这里再做一点处理，因为微信扫描二维码结果会把连在一起的几个空格省略为一个，
+# 而代码又用了四个空格作为缩进，而许多人确实会用微信扫二维码
+nested_str = nested_str.replace("    ", "\\t")
 # 将所有不允许的字符转成unicode转义字符形式
 nested_str = "".join([(('\\u'+format(ord(c), 'x').zfill(4))
                        if c not in allowed else c) for c in nested_str])
@@ -43,6 +46,6 @@ shell_str = shell_str.replace("\n", "")
 
 # 在约定的占位符处插入nested
 gaqioi_str = shell_str.replace("ABRACADABRA1", nested_parts[0]).replace(
-    "ABRACADABRA2", nested_parts[1]) + " # Copyright (C) 2019 UniGasiX | Licensed under GPL v3.0 | ATTENTION!!!: The MyQR module is needed. You may try ** pip3 install myqr ** to install."
+    "ABRACADABRA2", nested_parts[1]) + " # Copyright (C) 2019 UniGasiX | Licensed under GNU GPLv3.0 | ATTENTION!!!: The MyQR package is needed. You may try ** pip3 install myqr ** to install."
 with open("Gaqioi.py", "w") as f:
     f.write(gaqioi_str)
